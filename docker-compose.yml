@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  authen_listening:
+    build:
+      context: .
+    container_name: strapi-information-gateway
+    networks:
+      - cms_default
+
+networks:
+  cms_default:
+    name: cms_default
+    driver: bridge
