@@ -1,7 +1,7 @@
 package route
 
 import (
-	"unisun/api/strapi-information-gateway/src/controller"
+	"unisun/api/strapi-information-gateway/controller"
 
 	"github.com/gin-gonic/gin"
 )

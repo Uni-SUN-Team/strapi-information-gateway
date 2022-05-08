@@ -1,0 +1,58 @@
+basePath: /strapi-information-gateway/api
+definitions:
+  model.Response:
+    properties:
+      error:
+        type: string
+      payload:
+        type: string
+      status:
+        type: boolean
+    type: object
+host: api.unisun.dynu.com
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a server celler to strapi server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: STRAPI INFORMATION GATEWAY API
+  version: "1.0"
+paths:
+  /healthcheck:
+    get:
+      description: Health checking for the service
+      operationId: HealthCheckHandler
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Health Check
+  /strapi:
+    get:
+      description: Strapi Information Gateway for the service
+      operationId: StrapiInformationGatewayHandler
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: Strapi Information Gateway
+schemes:
+- https
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

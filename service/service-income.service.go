@@ -4,8 +4,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"unisun/api/strapi-information-gateway/src/model"
-	"unisun/api/strapi-information-gateway/src/utils"
+	"unisun/api/strapi-information-gateway/model"
+	"unisun/api/strapi-information-gateway/utils"
 )
 
 func CallStrapi(payload model.Payload) ([]byte, error) {
