@@ -84,6 +84,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: build
     steps:
       - name: Deploy to Server via SSH action
