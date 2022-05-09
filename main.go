@@ -1,11 +1,14 @@
 package main
 
 import (
+	"log"
 	"os"
 	"unisun/api/strapi-information-gateway/config"
+	"unisun/api/strapi-information-gateway/constants"
 	"unisun/api/strapi-information-gateway/controller"
 	"unisun/api/strapi-information-gateway/route"
 
+	"github.com/getsentry/sentry-go"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -42,8 +45,14 @@ func main() {
 	docs.SwaggerInfo.BasePath = "/v2"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
-	if os.Getenv("NODE") != "production" {
+	if os.Getenv(constants.NODE) != "production" {
 		config.ConfigENV()
+		err := sentry.Init(sentry.ClientOptions{
+			Dsn: os.Getenv(constants.SENTRY_DNS),
+		})
+		if err != nil {
+			log.Fatalf("sentry.Init: %s", err)
+		}
 	}
 	r := gin.Default()
 	r.GET("/healcheck", controller.HealthCheckHandler)
@@ -52,7 +61,7 @@ func main() {
 	{
 		route.Services(g)
 	}
-	port := os.Getenv("PORT")
+	port := os.Getenv(constants.PORT)
 	if port == "" {
 		r.Run(":8080")
 	} else {

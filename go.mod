@@ -6,6 +6,7 @@ require github.com/gin-gonic/gin v1.7.7
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
+	github.com/getsentry/sentry-go v0.13.0 // indirect
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2 // indirect
 	github.com/swaggo/http-swagger v1.2.8 // indirect
 )
