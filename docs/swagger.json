@@ -1,7 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "contact": {},
+        "license": {}
     },
     "paths": {
         "/healthcheck": {
@@ -11,15 +12,7 @@
                     "text/plain"
                 ],
                 "summary": "Health Check",
-                "operationId": "HealthCheckHandler",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
+                "operationId": "HealthCheckHandler"
             }
         },
         "/strapi": {
