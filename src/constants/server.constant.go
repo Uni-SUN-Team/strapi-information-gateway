@@ -4,5 +4,7 @@ const (
 	PORT         = "PORT"
 	PRODUCTION   = "production"
 	NODE         = "NODE"
-	TOKEN_STRAPI = "TOKEN_STRAPI"
+	VERSION      = "VERSION"
+	HOST         = "HOST"
+	CONTEXT_PATH = "CONTEXT_PATH"
 )

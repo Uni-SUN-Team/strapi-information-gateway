@@ -1,26 +1,8 @@
 {
-    "schemes": [
-        "https",
-        "http"
-    ],
     "swagger": "2.0",
     "info": {
-        "description": "This is a server celler to strapi server.",
-        "title": "STRAPI INFORMATION GATEWAY API",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
-        "version": "1.0"
+        "contact": {}
     },
-    "host": "api.unisun.dynu.com",
-    "basePath": "/strapi-information-gateway/api",
     "paths": {
         "/healthcheck": {
             "get": {
@@ -41,7 +23,7 @@
             }
         },
         "/strapi": {
-            "get": {
+            "post": {
                 "description": "Strapi Information Gateway for the service",
                 "produces": [
                     "application/json"
@@ -51,6 +33,12 @@
                 "responses": {
                     "200": {
                         "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "FAIL",
                         "schema": {
                             "$ref": "#/definitions/model.Response"
                         }
@@ -73,13 +61,6 @@
                     "type": "boolean"
                 }
             }
-        }
-    },
-    "securityDefinitions": {
-        "ApiKeyAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
         }
     }
 }

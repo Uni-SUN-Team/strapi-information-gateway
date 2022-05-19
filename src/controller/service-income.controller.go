@@ -3,8 +3,8 @@ package controller
 import (
 	"log"
 	"net/http"
-	"unisun/api/strapi-information-gateway/model"
-	"unisun/api/strapi-information-gateway/service"
+	"unisun/api/strapi-information-gateway/src/model"
+	"unisun/api/strapi-information-gateway/src/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,8 +14,9 @@ import (
 // @description  Strapi Information Gateway for the service
 // @id           StrapiInformationGatewayHandler
 // @produce      json
-// @response     200  {object}  model.Response  "OK"
-// @router       /strapi [get]
+// @success     200  {object}  model.Response  "OK"
+// @failure		400  {object}  model.Response  "FAIL"
+// @router       /strapi [post]
 func StrapiGateway(c *gin.Context) {
 	var body = model.Payload{}
 	var responseStruct = model.Response{}

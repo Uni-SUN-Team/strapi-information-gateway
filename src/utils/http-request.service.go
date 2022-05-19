@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 	"time"
-	"unisun/api/strapi-information-gateway/constants"
+	"unisun/api/strapi-information-gateway/src/constants"
 )
 
 func HTTPRequest(url string, method string, payload []byte) *http.Response {
