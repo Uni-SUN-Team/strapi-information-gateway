@@ -9,7 +9,7 @@ ENV SENTRY_DNS=https://60831186464d48a19f8160f0e885d01c@o1238561.ingest.sentry.i
 ENV VERSION=1.0.3
 ENV HOST=api.unisun.dynu.com
 ENV GIN_MODE=release
-ENV LOG_PATH=/usr/src/app/tmp/app_log
+ENV LOG_PATH=/usr/src/app/tmp/app.log
 
 WORKDIR /usr/src/app
 
