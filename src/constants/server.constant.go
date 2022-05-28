@@ -7,4 +7,5 @@ const (
 	VERSION      = "VERSION"
 	HOST         = "HOST"
 	CONTEXT_PATH = "CONTEXT_PATH"
+	LOG_PATH     = "LOG_PATH"
 )

@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"log"
 	"net/http"
+	"unisun/api/strapi-information-gateway/src/logging"
 	"unisun/api/strapi-information-gateway/src/model"
 	"unisun/api/strapi-information-gateway/src/service"
 
@@ -21,6 +21,7 @@ func StrapiGateway(c *gin.Context) {
 	var body = model.Payload{}
 	var responseStruct = model.Response{}
 	if err := c.ShouldBindJSON(&body); err != nil {
+		logging.Println("Bind json body is error.", err.Error())
 		responseStruct.Error = err.Error()
 		responseStruct.Status = false
 		responseStruct.Payload = ""
@@ -29,7 +30,7 @@ func StrapiGateway(c *gin.Context) {
 	}
 	response, error := service.CallStrapi(body)
 	if error != nil {
-		log.Panicln("Call strapi is error!.", error.Error())
+		logging.Println("Call strapi is error!.", error.Error())
 		responseStruct.Error = error.Error()
 		responseStruct.Status = false
 		responseStruct.Payload = string(response)
