@@ -10,7 +10,6 @@ definitions:
     type: object
 info:
   contact: {}
-  license: {}
 paths:
   /healthcheck:
     get:
@@ -18,6 +17,11 @@ paths:
       operationId: HealthCheckHandler
       produces:
       - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
       summary: Health Check
   /strapi:
     post:

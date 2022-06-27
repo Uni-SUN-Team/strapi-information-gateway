@@ -13,7 +13,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: registry.hub.docker.com
   # github.repository as <account>/<repo>
-  IMAGE_NAME: narawich/unisun.strapi_information_gateway
+  IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
 
 
 jobs:
@@ -50,8 +50,8 @@ jobs:
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
           registry: ${{ env.REGISTRY }}
-          username: narawich
-          password: 9a56ad5f-6f48-4310-a0b0-f134bab8e3be
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -67,7 +67,7 @@ jobs:
         id: build-and-push-version
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: .
+          context: ./.resource/sit/
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -78,7 +78,7 @@ jobs:
         id: build-and-push-latest
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: .
+          context: ./.resource/sit/
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
@@ -98,6 +98,6 @@ jobs:
             # Stop running container
             docker compose down -v
             # Pull update new image
-            docker image rm -f ${{ env.IMAGE_NAME }}
+            docker pull ${{ env.IMAGE_NAME }}
             # Run a new container from a new image
             docker compose up -d

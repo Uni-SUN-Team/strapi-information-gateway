@@ -3,13 +3,21 @@ package utils
 import (
 	"bytes"
 	"net/http"
-	"os"
 	"time"
 	"unisun/api/strapi-information-gateway/src/constants"
-	"unisun/api/strapi-information-gateway/src/logging"
 )
 
-func HTTPRequest(url string, method string, payload []byte) *http.Response {
+type Service struct {
+	AccessToken string
+}
+
+func New(accessToken string) *Service {
+	return &Service{
+		AccessToken: accessToken,
+	}
+}
+
+func (svr *Service) HTTPRequest(url string, method string, payload []byte) (*http.Response, error) {
 	var request *http.Request
 	var err error
 	var body *bytes.Buffer
@@ -30,18 +38,18 @@ func HTTPRequest(url string, method string, payload []byte) *http.Response {
 		body = bytes.NewBuffer(nil)
 	}
 	if err != nil {
-		logging.Println("Create request error.", err.Error())
+		return nil, err
 	}
 	request, err = http.NewRequest(method, url, body)
 	if err != nil {
-		logging.Println("Client request to "+url+" is not success.", err.Error())
+		return nil, err
 	}
-	bearer := "Bearer " + os.Getenv(constants.TOKEN_STRAPI)
+	bearer := "Bearer " + svr.AccessToken
 	request.Header.Add("Authorization", bearer)
 	request.Header.Set("Content-type", "application/json")
 	response, err := client.Do(request)
 	if err != nil {
-		logging.Println("Client is error.", err.Error())
+		return nil, err
 	}
-	return response
+	return response, nil
 }

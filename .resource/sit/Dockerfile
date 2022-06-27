@@ -7,7 +7,7 @@ COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
 COPY . .
-RUN rm -f /usr/src/app/src/resource/app.yaml && mv /usr/src/app/.resource/app-sit.yaml /usr/src/app/src/resource/app.yaml
+RUN rm -f /usr/src/app/src/resource/app.yaml && mv /usr/src/app/.resource/sit/app.yaml /usr/src/app/src/resource/app.yaml
 RUN go build -v -o /usr/local/bin/app .
 
 EXPOSE 8080

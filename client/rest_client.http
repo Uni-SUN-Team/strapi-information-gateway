@@ -1,0 +1,11 @@
+@HOST = http://localhost:8080 
+@PATH = /strapi-information-gateway/api/v1/strapi
+
+POST {{HOST}}{{PATH}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "Path": "/api/advisors?populate[attachment]=*&populate[SEO][populate][shareImage][populate]=*&populate[thumbnail]=*&populate[categories]=*",
+    "Method": "GET",
+    "Body": ""
+}

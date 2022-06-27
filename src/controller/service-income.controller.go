@@ -1,13 +1,24 @@
 package controller
 
 import (
+	"log"
 	"net/http"
-	"unisun/api/strapi-information-gateway/src/logging"
+
 	"unisun/api/strapi-information-gateway/src/model"
-	"unisun/api/strapi-information-gateway/src/service"
+	"unisun/api/strapi-information-gateway/src/ports"
 
 	"github.com/gin-gonic/gin"
 )
+
+type ControllerServiceIncomeAdapter struct {
+	Service ports.ServiceIncome
+}
+
+func NewControllerServiceIncomeAdapter(service ports.ServiceIncome) *ControllerServiceIncomeAdapter {
+	return &ControllerServiceIncomeAdapter{
+		Service: service,
+	}
+}
 
 // StrapiInformationGatewayHandler godoc
 // @summary      Strapi Information Gateway
@@ -17,28 +28,28 @@ import (
 // @success     200  {object}  model.Response  "OK"
 // @failure		400  {object}  model.Response  "FAIL"
 // @router       /strapi [post]
-func StrapiGateway(c *gin.Context) {
+func (srv *ControllerServiceIncomeAdapter) StrapiGateway(c *gin.Context) {
 	var body = model.Payload{}
 	var responseStruct = model.Response{}
 	if err := c.ShouldBindJSON(&body); err != nil {
-		logging.Println("Bind json body is error.", err.Error())
 		responseStruct.Error = err.Error()
 		responseStruct.Status = false
 		responseStruct.Payload = ""
-		c.JSON(http.StatusBadRequest, responseStruct)
+		c.AbortWithStatusJSON(http.StatusBadRequest, responseStruct)
+		log.Panic("Bind json body is error.", err)
 		return
 	}
-	response, error := service.CallStrapi(body)
-	if error != nil {
-		logging.Println("Call strapi is error!.", error.Error())
-		responseStruct.Error = error.Error()
+	response, err := srv.Service.CallStrapi(body)
+	if err != nil {
+		responseStruct.Error = err.Error()
 		responseStruct.Status = false
 		responseStruct.Payload = string(response)
-		c.JSON(http.StatusBadRequest, responseStruct)
+		c.AbortWithStatusJSON(http.StatusBadRequest, responseStruct)
+		log.Panic("Call strapi is error!.", err)
 		return
 	}
 	responseStruct.Error = ""
 	responseStruct.Status = true
 	responseStruct.Payload = string(response)
-	c.IndentedJSON(http.StatusOK, responseStruct)
+	c.AbortWithStatusJSON(http.StatusOK, responseStruct)
 }
