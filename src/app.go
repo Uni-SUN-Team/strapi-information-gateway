@@ -31,6 +31,7 @@ func App() *gin.Engine {
 	docs.SwaggerInfo.Host = viper.GetString("app.host")
 	docs.SwaggerInfo.BasePath = viper.GetString("app.context_path") + viper.GetString("app.root_path")
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+
 	healController := controller.NewControllerHealthCheckHandler()
 
 	utilAdap := utils.New(viper.GetString("endpoint.strapi.access_token"))
