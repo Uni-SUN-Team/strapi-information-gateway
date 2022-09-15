@@ -9,7 +9,7 @@ require (
 	github.com/swaggo/swag v1.8.3
 )
 
-require github.com/narawichsaphimarn/handlercontrol v0.0.6
+require github.com/narawichsaphimarn/handlercontrol v0.0.8
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect

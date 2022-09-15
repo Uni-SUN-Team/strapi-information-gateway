@@ -213,8 +213,8 @@ github.com/modern-go/reflect2 v1.0.2 h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9G
 github.com/modern-go/reflect2 v1.0.2/go.mod h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjYzDa0/r8luk=
 github.com/narawichsaphimarn/goyamlenv v0.0.10 h1:cP9dNMsrrhoXVKtb5JZIxWrko7zS0sjSX5w7YVln/SY=
 github.com/narawichsaphimarn/goyamlenv v0.0.10/go.mod h1:GvgGc1Df3r+bGSwf8Hh3bb7W7uxhfbZwcMm1l7Pp41M=
-github.com/narawichsaphimarn/handlercontrol v0.0.6 h1:Vv7L6/1KARruADyr6kRxIbV/KDsyguKWzs0VIXLRgvY=
-github.com/narawichsaphimarn/handlercontrol v0.0.6/go.mod h1:g5s4Y+VlcDwjBso4ORm8VJkKNExzhhaXbsFlHC4P1s0=
+github.com/narawichsaphimarn/handlercontrol v0.0.8 h1:jQyd3pIHUNdYVuM6x13oiKTy/HX6DlKWWdzT5yH+zAQ=
+github.com/narawichsaphimarn/handlercontrol v0.0.8/go.mod h1:g5s4Y+VlcDwjBso4ORm8VJkKNExzhhaXbsFlHC4P1s0=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
 github.com/pelletier/go-toml v1.9.5 h1:4yBQzkHv+7BHq2PQUZF3Mx0IYxG7LsP222s7Agd3ve8=
 github.com/pelletier/go-toml v1.9.5/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
