@@ -1,13 +1,12 @@
 package controllers
 
 import (
-	"log"
-	"net/http"
-
 	"unisun/api/unisun-strapi-inquiry/src/models"
 	"unisun/api/unisun-strapi-inquiry/src/ports/services"
 
 	"github.com/gin-gonic/gin"
+	"github.com/narawichsaphimarn/handlercontrol/response/constants"
+	serviceResp "github.com/narawichsaphimarn/handlercontrol/response/services"
 )
 
 type service struct {
@@ -22,26 +21,18 @@ func NewControllerStrapi(serviceStrapi services.ServiceStrapi) *service {
 
 func (srv *service) CallStrapi(c *gin.Context) {
 	var body = models.Payload{}
-	var responseStruct = models.Response{}
 	if err := c.ShouldBindJSON(&body); err != nil {
-		responseStruct.Error = err.Error()
-		responseStruct.Status = false
-		responseStruct.Payload = ""
-		c.AbortWithStatusJSON(http.StatusBadRequest, responseStruct)
-		log.Panic("Bind json body is error.", err)
-		return
+		code := constants.InternalServerError
+		msg := serviceResp.HttpMessage(code)
+		c.AbortWithStatusJSON(code, serviceResp.MapResponseUnsuccess(code, msg, err.Error(), nil))
 	}
 	response, err := srv.Service.CallStrapi(body)
 	if err != nil {
-		responseStruct.Error = err.Error()
-		responseStruct.Status = false
-		responseStruct.Payload = string(response)
-		c.AbortWithStatusJSON(http.StatusBadRequest, responseStruct)
-		log.Panic("Call strapi is error!.", err)
-		return
+		code := constants.InternalServerError
+		msg := serviceResp.HttpMessage(code)
+		c.AbortWithStatusJSON(code, serviceResp.MapResponseUnsuccess(code, msg, err.Error(), nil))
 	}
-	responseStruct.Error = ""
-	responseStruct.Status = true
-	responseStruct.Payload = string(response)
-	c.AbortWithStatusJSON(http.StatusOK, responseStruct)
+	code := constants.OK
+	msg := serviceResp.HttpMessage(code)
+	c.AbortWithStatusJSON(code, serviceResp.MapResponseSuccess(code, msg, response))
 }
