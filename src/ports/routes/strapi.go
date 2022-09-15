@@ -1,7 +1,7 @@
-package ports
+package routes
 
 import "github.com/gin-gonic/gin"
 
-type RouteServiceIncome interface {
+type RouteStrapi interface {
 	Services(r *gin.RouterGroup)
 }

@@ -1,14 +1,18 @@
 package src
 
 import (
-	"unisun/api/strapi-information-gateway/docs"
-	"unisun/api/strapi-information-gateway/src/controller"
-	"unisun/api/strapi-information-gateway/src/route"
-	"unisun/api/strapi-information-gateway/src/service"
-	"unisun/api/strapi-information-gateway/src/utils"
+	"strings"
+	"unisun/api/unisun-strapi-inquiry/docs"
+
+	"unisun/api/unisun-strapi-inquiry/src/configs/environment"
+	"unisun/api/unisun-strapi-inquiry/src/constants"
+	"unisun/api/unisun-strapi-inquiry/src/controllers"
+	"unisun/api/unisun-strapi-inquiry/src/routes"
+	"unisun/api/unisun-strapi-inquiry/src/services"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
+	"github.com/narawichsaphimarn/handlercontrol"
+	"github.com/narawichsaphimarn/handlercontrol/models"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
@@ -25,26 +29,48 @@ import (
 // @in                          header
 // @name                        Authorization
 func App() *gin.Engine {
-	docs.SwaggerInfo.Title = "STRAPI INFORMATION GATEWAY API"
-	docs.SwaggerInfo.Description = "This is a server celler to strapi server."
-	docs.SwaggerInfo.Version = viper.GetString("app.version")
-	docs.SwaggerInfo.Host = viper.GetString("app.host")
-	docs.SwaggerInfo.BasePath = viper.GetString("app.context_path") + viper.GetString("app.root_path")
-	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+	appEnv := environment.ENV.App
+	ginEnv := environment.ENV.Gin
+	swagEnv := environment.ENV.Swag
+	docs.SwaggerInfo.Title = swagEnv.Title
+	docs.SwaggerInfo.Description = swagEnv.Description
+	docs.SwaggerInfo.Version = swagEnv.Version
+	docs.SwaggerInfo.Host = swagEnv.Host
+	docs.SwaggerInfo.BasePath = strings.Join([]string{appEnv.ContextPath, ginEnv.RootPath, ginEnv.Version}, "/")
+	docs.SwaggerInfo.Schemes = strings.Split(swagEnv.Schemes, ",")
 
-	healController := controller.NewControllerHealthCheckHandler()
-
-	utilAdap := utils.New(viper.GetString("endpoint.strapi.access_token"))
-	serviceAdap := service.New(utilAdap)
-	controllerAdap := controller.NewControllerServiceIncomeAdapter(serviceAdap)
-	routeAdap := route.NewRouteService(controllerAdap)
 	r := gin.Default()
-	g := r.Group(viper.GetString("app.context_path") + viper.GetString("app.root_path") + "/v1")
+	r.SetTrustedProxies(strings.Split(ginEnv.Configs.TrustedProxies, ","))
+	g := r.Group(strings.Join([]string{appEnv.ContextPath, ginEnv.RootPath, ginEnv.Version}, "/"))
 	{
-		g.GET("/healcheck", healController.HealthCheckHandler)
 		g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 		g.StaticFile("/license", "./LICENSE")
-		routeAdap.Services(g)
+		mapRouteHealthCheck(g)
+		mapRouteStrapi(g)
 	}
 	return r
+}
+
+func mapRouteHealthCheck(g *gin.RouterGroup) {
+	controller := controllers.NewControllerHealthCheckHandler()
+	route := routes.NewHealthCheck(controller)
+	route.HealthCheckRoute(g)
+}
+
+func mapRouteStrapi(g *gin.RouterGroup) {
+	endEnv := environment.ENV.Endpoint
+	httpForm := models.HttpRequestForm{}
+	httpForm.TimeOut = 60000
+	httpForm.ContentType = constants.CONTENT_TYPE
+	httpForm.Authorization = struct {
+		Token string
+		Type  string
+	}{
+		Token: endEnv.Strapi.Token,
+	}
+	http := handlercontrol.NewHttpRequest(httpForm)
+	service := services.New(http)
+	controller := controllers.NewControllerStrapi(service)
+	route := routes.NewStrapi(controller)
+	route.StapiRoute(g)
 }

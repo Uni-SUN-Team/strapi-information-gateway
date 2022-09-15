@@ -1,4 +1,4 @@
-package model
+package models
 
 type Payload struct {
 	Path   string `json:"path"`
